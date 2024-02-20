@@ -1,0 +1,149 @@
+basePath: /api/v1
+definitions:
+  main.Alarm:
+    properties:
+      id:
+        type: integer
+      message:
+        type: string
+      severity:
+        type: string
+      startTime:
+        type: string
+      title:
+        type: string
+    type: object
+  main.User:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: API Support
+    url: https://www.example.com/support
+  description: This is a sample API for managing alarms.
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://example.com/terms-of-service
+  title: Alarm API
+  version: "1.0"
+paths:
+  /alarms:
+    get:
+      consumes:
+      - application/json
+      description: Get all alarms
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Alarm'
+            type: array
+      summary: Get all Alarms
+      tags:
+      - Alarms
+  /clearAlarms/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Clear an alarm by ID
+      parameters:
+      - description: Alarm ID to clear
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Alarm cleared successfully
+          schema:
+            type: string
+        "404":
+          description: Alarm not found
+          schema:
+            type: string
+      summary: Clear Alarm
+      tags:
+      - Alarms
+  /generateAlarms:
+    post:
+      consumes:
+      - application/json
+      description: Generate a new alarm
+      parameters:
+      - description: Alarm object that needs to be generated
+        in: body
+        name: alarm
+        required: true
+        schema:
+          $ref: '#/definitions/main.Alarm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.Alarm'
+      summary: Generate Alarm
+      tags:
+      - Alarms
+  /updateAlarms/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update an alarm by ID
+      parameters:
+      - description: Alarm ID to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated Alarm object
+        in: body
+        name: alarm
+        required: true
+        schema:
+          $ref: '#/definitions/main.Alarm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Alarm'
+        "404":
+          description: Alarm not found
+          schema:
+            type: string
+      summary: Update Alarm
+      tags:
+      - Alarms
+  /users/{id}:
+    get:
+      description: Retrieve user information by ID
+      operationId: get-user-by-id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.User'
+      summary: Get a user by ID
+swagger: "2.0"
